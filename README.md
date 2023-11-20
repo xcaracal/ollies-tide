@@ -16,7 +16,7 @@ Welcome to the Ollie's Tide repository! 🦦🦦
 
 1. Open GitHub Desktop.
 2. Click on "File" > "Clone Repository..."
-3. Paste this link: `https://github.com/your-username/your-repository.git`.
+3. Paste this link: `https://github.com/xcaracal/ollies-tide.git`.
 4. Choose a location on your computer.
 5. Click "Clone."
 
