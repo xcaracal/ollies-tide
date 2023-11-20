@@ -1,6 +1,6 @@
 # Ollie's Tide
 
-Welcome to the Ollie's Tide repository! 🦦
+Welcome to the Ollie's Tide repository! 🦦🦦
 
 ![Cute Game Image](/assets/ollie-otter.gif)
 
