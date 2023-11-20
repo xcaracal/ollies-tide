@@ -2,6 +2,9 @@
 
 Welcome to the Ollie's Tide repository! 🦦
 
+![Cute Game Image](/assets/ollie-otter.gif)
+
+
 ## Getting Started
 
 ### 1. Download the Tools
