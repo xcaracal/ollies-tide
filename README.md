@@ -1,4 +1,4 @@
-# Project Name
+# Ollie's Tide
 
 Welcome to the Ollie's Tide repository! 🦦
 
