@@ -1,0 +1,49 @@
+local function update_healthbar(p)
+	local node = gui.get_node("healthbar")
+	local size = gui.get_size(node)
+
+	size.x = (1 - p) * 300 -- max width is 400 pixels, subtracting from 1 to invert the value
+	gui.set_size(node, size)
+
+	-- Set interpolation mode to nearest neighbor to prevent blurriness
+	gui.set_texture(node, hash("health-bar"), gui.NEAREST, gui.NEAREST)
+end
+
+function init(self)
+	print("GUI Script Initialized")
+	msg.post(".", "acquire_input_focus") 
+	self.time = 0
+	self.healthPercentage = 0 -- Initial health percentage
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed then
+		local button = gui.get_node("character1-ability")
+		if gui.pick_node(button, action.x, action.y) then
+			-- Button is pressed, decrease health by 10%
+			self.healthPercentage = self.healthPercentage + 0.1
+
+			-- Ensure healthPercentage doesn't go below 0
+			if self.healthPercentage > 1 then
+				self.healthPercentage = 0
+			end
+
+			-- Update the health bar
+			update_healthbar(self.healthPercentage)
+		end
+	end
+end
+
+function update(self, dt)
+	-- Reset healthPercentage to full every 10 seconds
+	--if self.time % 10 == 0 then
+	--	self.healthPercentage = 1.0
+	--]end
+
+	-- calculate a value between 0.0 and 1.0
+	-- the value will gradually increase from 0 to 1 during 3 seconds
+	--local p = (self.time % 10) / 10
+	--update_healthbar(self.healthPercentage)
+
+	--self.time = self.time + dt
+end
