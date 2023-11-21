@@ -1,0 +1,34 @@
+local function update_healthbar(p)
+	local node = gui.get_node("healthbar")
+	local size = gui.get_size(node)
+
+	size.x = (1 - p) * 300 -- max width is 400 pixels, subtracting from 1 to invert the value
+	gui.set_size(node, size)
+
+	-- Set interpolation mode to nearest neighbor to prevent blurriness
+	gui.set_texture(node, hash("healthbar-box"), gui.NEAREST, gui.NEAREST)
+end
+
+function init(self)
+	print("GUI Script Initialized")
+	msg.post(".", "acquire_input_focus") 
+	self.time = 0
+	self.healthPercentage = 0 -- Initial health percentage
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_health_bar") then
+		print("ping")
+		-- Update the health bar position based on the received character position
+		local health_bar_offset = vmath.vector3(630, 450, 0)  -- Adjust this offset as needed
+		local new_health_bar_position = (message.position + health_bar_offset)
+		local temp_position = vmath.vector3(new_health_bar_position.x*-1, new_health_bar_position.y*-1, new_health_bar_position.z)
+		print(message.position	)
+		print(new_health_bar_position)
+		gui.set_position(gui.get_node("healthbar-box"), new_health_bar_position)
+	end
+end
+
+function update(self, dt)
+	
+end

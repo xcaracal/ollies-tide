@@ -1,0 +1,55 @@
+local prev_idle = true;
+	
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.move_timer = 0
+	self.move_direction = 1 -- 1 for right, -1 for left
+	self.flip = vmath.vector3(1, 1, 1) -- This represents no flip initially
+	self.vel = vmath.vector3(0, 0, 0)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_health_bar") then
+		-- Update the health bar position based on the received character position
+		local health_bar_offset = vmath.vector3(0, 50, 0)  -- Adjust this offset as needed
+		local new_health_bar_position = message.position + health_bar_offset
+		gui.set_position(gui.get_node("healthbar"), new_health_bar_position)
+	end
+end
+
+
+function update(self, dt)
+	-- Get the position of the character sprite
+	local character_position = go.get_position()
+	print("POS:")
+	print(character_position)
+
+	-- Send a message to the GUI script with the character's position
+	msg.post("#otter", "update_health_bar", { position = character_position })
+
+	-- Reverse the direction and flip the sprite when the timer reaches a certain value
+	self.move_timer = self.move_timer + dt
+	local change_direction_time = 5 -- Adjust as needed
+
+	if self.move_timer > change_direction_time then
+		self.flip.x = -self.flip.x -- Toggle the horizontal flip
+		sprite.set_hflip("#sprite", self.flip.x == -1)
+		self.move_direction = -self.move_direction
+		self.move_timer = 0
+	end
+
+	-- Adjust the speed based on your preference
+	local speed = 10
+
+	-- Move the sprite left and right based on time
+	self.vel.x = self.move_direction * speed
+	local pos = go.get_position()
+	pos = pos + self.vel * dt
+	go.set_position(pos)
+	print(prev_idle)
+	if prev_idle == true then
+	-- Play the run animation continuously
+	sprite.play_flipbook("#sprite", "run")
+	prev_idle = false;
+	end
+end
