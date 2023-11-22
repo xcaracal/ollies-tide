@@ -3,10 +3,15 @@ local prev_idle = true;
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.move_timer = 0
-	self.move_direction = 1 -- 1 for right, -1 for left
-	self.flip = vmath.vector3(1, 1, 1) -- This represents no flip initially
+	self.move_direction = -1 -- 1 for right, -1 for left
+	self.flip = vmath.vector3(-1, 1, 1) -- Set X scale to -1 to flip the sprite initially
 	self.vel = vmath.vector3(0, 0, 0)
+
+	-- Set the initial scale to flip the sprite horizontally
+	sprite.set_hflip("#sprite", self.flip.x == -1)
 end
+
+
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_health_bar") then
@@ -21,11 +26,11 @@ end
 function update(self, dt)
 	-- Get the position of the character sprite
 	local character_position = go.get_position()
-	--print("POS:")
-	--print(character_position)
+	print("POS:")
+	print(character_position)
 
 	-- Send a message to the GUI script with the character's position
-	msg.post("#otter", "update_health_bar", { position = character_position })
+	msg.post("#enemy", "update_health_bar", { position = character_position })
 
 	-- Reverse the direction and flip the sprite when the timer reaches a certain value
 	self.move_timer = self.move_timer + dt
@@ -49,7 +54,7 @@ function update(self, dt)
 	print(prev_idle)
 	if prev_idle == true then
 	-- Play the run animation continuously
-	sprite.play_flipbook("#sprite", "run")
+	--sprite.play_flipbook("#sprite", "run")
 	prev_idle = false;
 	end
 end

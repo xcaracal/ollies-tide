@@ -20,11 +20,11 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("update_health_bar") then
 		--print("ping")
 		-- Update the health bar position based on the received character position
-		local health_bar_offset = vmath.vector3(630, 450, 0)  -- Adjust this offset as needed
+		local health_bar_offset = vmath.vector3(680, 270, 0)  -- Adjust this offset as needed
 		local new_health_bar_position = (message.position + health_bar_offset)
 		local temp_position = vmath.vector3(new_health_bar_position.x*-1, new_health_bar_position.y*-1, new_health_bar_position.z)
-		--print(message.position	)
-		--print(new_health_bar_position)
+		print(message.position	)
+		print(new_health_bar_position)
 		gui.set_position(gui.get_node("healthbar-box"), new_health_bar_position)
 	end
 end

@@ -1,17 +1,5 @@
 images {
-  image: "/assets/health-bar/greenbar (2).png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
-  image: "/assets/health-bar/greenbar (3).png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
   image: "/assets/health-bar/health-bar.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
-  image: "/assets/health-bar/greenbar-edge.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
