@@ -1,36 +1,41 @@
 local function update_healthbar(p)
+	-- Get the GUI node representing the health bar
 	local node = gui.get_node("healthbar")
 	local size = gui.get_size(node)
 
-	size.x = (1 - p) * 300 -- max width is 400 pixels, subtracting from 1 to invert the value
+	-- Ensure p is within the valid range [0, 100]
+	p = math.max(0, math.min(100, p))
+
+	-- Update the size based on health percentage in the range of 0-100
+	size.x = (1 - p / 100) * 300 -- Max width is 400 pixels, subtracting from 1 to invert the value
 	gui.set_size(node, size)
 
-	-- Set interpolation mode to nearest neighbor to prevent blurriness
-	--gui.set_texture(node, hash("healthbar-box"), gui.NEAREST, gui.NEAREST)
 end
 
 function init(self)
-	--print("GUI Script Initialized")
+	-- Initialize the GUI script
+	-- print("GUI Script Initialized")
 	msg.post(".", "acquire_input_focus") 
 	self.time = 0
 	self.healthPercentage = 0 -- Initial health percentage
 end
 
-
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_health_bar") then
 		-- Update the health bar position based on the received character position
-		local health_bar_offset = vmath.vector3(630, 450, 0)  -- Adjust this offset as needed
-		local new_health_bar_position = (message.position + health_bar_offset)
-		local temp_position = vmath.vector3(new_health_bar_position.x*-1, new_health_bar_position.y*-1, new_health_bar_position.z)
+		local health_bar_offset = vmath.vector3(630, 450, 0) -- Adjust this offset as needed
+		local new_health_bar_position = message.position + health_bar_offset
+		local temp_position = vmath.vector3(-new_health_bar_position.x, -new_health_bar_position.y, new_health_bar_position.z)
 
+		-- Set the position of the health bar GUI node
 		gui.set_position(gui.get_node("healthbar-box"), new_health_bar_position)
 	elseif message_id == hash("update_health") then
-		self.healthPercentage = self.healthPercentage + 0.1
+		-- Increase health percentage
+		self.healthPercentage = self.healthPercentage + 10
 
 		-- Ensure healthPercentage doesn't go above 1
-		if self.healthPercentage > 1 then
-			self.healthPercentage = 1
+		if self.healthPercentage > 100 then
+			self.healthPercentage = 100
 			msg.post("#player", "stop_sprite")
 		end
 
@@ -40,5 +45,5 @@ function on_message(self, message_id, message, sender)
 end
 
 function update(self, dt)
-	
+	-- Perform any additional updates if needed
 end

@@ -2,85 +2,64 @@ local prev_idle = true;
 local hit_flag = false;
 local alive_status = true;
 
--- collision_object_script.lua
 local collision_groups = require "main.collision_groups"
-	
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.move_timer = 0
 	self.move_direction = 1 -- 1 for right, -1 for left
-	self.flip = vmath.vector3(1, 1, 1) -- This represents no flip initially
+	self.flip = vmath.vector3(1, 1, 1) -- Represents no flip initially
 	self.vel = vmath.vector3(0, 0, 0)
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_health_bar") then
 		-- Update the health bar position based on the received character position
-		local health_bar_offset = vmath.vector3(0, 50, 0)  -- Adjust this offset as needed
+		local health_bar_offset = vmath.vector3(0, 50, 0) -- Adjust this offset as needed
 		local new_health_bar_position = message.position + health_bar_offset
 		gui.set_position(gui.get_node("healthbar"), new_health_bar_position)
-	end
-end
-
-function on_collision(self, normal, distance)
-	local message = { 
-		other_group = collision_groups.enemy,
-		other_id = msg.url(),
-		normal = normal,
-		distance = distance
-	}
-	msg.post("#", "collision_response", message)
-end
-
-function on_message(self, message_id, message, sender)
-	if message_id == hash("collision_response") then
+	elseif message_id == hash("collision_response") then
 		print("OTTER HIT")
-		hit_flag = true;
+		hit_flag = true
 		msg.post("#otter", "update_health")
 
+		-- Move the character position slightly to the left upon collision
 		local character_position = go.get_position()
-		character_position = character_position-vmath.vector3(60, 0, 0)
+		character_position = character_position - vmath.vector3(60, 0, 0)
 		go.set_position(character_position)
 
-
-		hit_flag = false;
+		hit_flag = false
 		-- Handle the collision here
 		-- 'message.other_group' can be used to identify the other collision group
 		-- 'message.other_id' can be used to identify the other collision object
 		-- 'message.normal' contains the collision normal vector
 		-- 'message.distance' contains the penetration distance
 	elseif message_id == hash("stop_sprite") then
-		alive_status = false;
+		alive_status = false
 	end
 end
-
-
 
 function update(self, dt)
 	-- Get the position of the character sprite
 	local character_position = go.get_position()
-	--print("POS:")
-	--print(character_position)
 
 	-- Send a message to the GUI script with the character's position
 	msg.post("#otter", "update_health_bar", { position = character_position })
-
-	
 
 	-- Adjust the speed based on your preference
 	local speed = 50
 
 	-- Move the sprite left and right based on time
-	if alive_status == true then
+	if alive_status then
 		self.vel.x = self.move_direction * speed
 		local pos = go.get_position()
 		pos = pos + self.vel * dt
 		go.set_position(pos)
 	end
-	
-	if prev_idle == true then
-	-- Play the run animation continuously
-	sprite.play_flipbook("#sprite", "otter-basic")
-	prev_idle = false;
+
+	if prev_idle then
+		-- Play the run animation continuously
+		sprite.play_flipbook("#sprite", "otter-basic")
+		prev_idle = false
 	end
 end
