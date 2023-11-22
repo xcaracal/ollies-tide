@@ -76,7 +76,7 @@ function update(self, dt)
 	
 	if prev_idle == true then
 	-- Play the run animation continuously
-	sprite.play_flipbook("#sprite", "run")
+	sprite.play_flipbook("#sprite", "otter-basic")
 	prev_idle = false;
 	end
 end

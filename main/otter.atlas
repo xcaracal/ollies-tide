@@ -1,3 +1,7 @@
+images {
+  image: "/assets/otter-basic/otter-basic.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
 animations {
   id: "idle"
   images {
