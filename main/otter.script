@@ -1,5 +1,6 @@
 local prev_idle = true;
 local hit_flag = false;
+local alive_status = true;
 
 -- collision_object_script.lua
 local collision_groups = require "main.collision_groups"
@@ -48,6 +49,8 @@ function on_message(self, message_id, message, sender)
 		-- 'message.other_id' can be used to identify the other collision object
 		-- 'message.normal' contains the collision normal vector
 		-- 'message.distance' contains the penetration distance
+	elseif message_id == hash("stop_sprite") then
+		alive_status = false;
 	end
 end
 
@@ -68,7 +71,7 @@ function update(self, dt)
 	local speed = 50
 
 	-- Move the sprite left and right based on time
-	if hit_flag == false then
+	if alive_status == true then
 		self.vel.x = self.move_direction * speed
 		local pos = go.get_position()
 		pos = pos + self.vel * dt

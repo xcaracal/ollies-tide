@@ -30,7 +30,8 @@ function on_message(self, message_id, message, sender)
 
 		-- Ensure healthPercentage doesn't go above 1
 		if self.healthPercentage > 1 then
-			self.healthPercentage = 0
+			self.healthPercentage = 1
+			msg.post("#enemy1", "stop_sprite")
 		end
 
 		-- Update the health bar
