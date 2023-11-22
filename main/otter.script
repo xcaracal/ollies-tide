@@ -35,6 +35,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		print("OTTER HIT")
 		hit_flag = true;
+		msg.post("#otter", "update_health")
 
 		local character_position = go.get_position()
 		character_position = character_position-vmath.vector3(60, 0, 0)
@@ -64,7 +65,7 @@ function update(self, dt)
 	
 
 	-- Adjust the speed based on your preference
-	local speed = 20
+	local speed = 50
 
 	-- Move the sprite left and right based on time
 	if hit_flag == false then

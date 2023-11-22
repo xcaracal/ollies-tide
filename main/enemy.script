@@ -41,6 +41,14 @@ function on_message(self, message_id, message, sender)
 		print("ENEMY HIT")
 		hit_flag = true;
 		msg.post("#enemy", "update_health")
+
+
+		local character_position = go.get_position()
+		character_position = character_position-vmath.vector3(-60, 0, 0)
+		go.set_position(character_position)
+
+
+		hit_flag = false;
 		-- Handle the collision here
 		-- 'message.other_group' can be used to identify the other collision group
 		-- 'message.other_id' can be used to identify the other collision object
@@ -58,19 +66,9 @@ function update(self, dt)
 	-- Send a message to the GUI script with the character's position
 	msg.post("#enemy", "update_health_bar", { position = character_position })
 
-	-- Reverse the direction and flip the sprite when the timer reaches a certain value
-	--self.move_timer = self.move_timer + dt
-	--local change_direction_time = 8 -- Adjust as needed
-
-	--if self.move_timer > change_direction_time then
-	--	self.flip.x = -self.flip.x -- Toggle the horizontal flip
-	--	sprite.set_hflip("#sprite", self.flip.x == -1)
-	--	self.move_direction = -self.move_direction
-	--	self.move_timer = 0
-	--end
 
 	-- Adjust the speed based on your preference
-	local speed = 20
+	local speed = 50
 
 	-- Move the sprite left and right based on time
 	if hit_flag == false then
@@ -82,8 +80,6 @@ function update(self, dt)
 	
 	
 	if prev_idle == true then
-	-- Play the run animation continuously
-	--sprite.play_flipbook("#sprite", "run")
 	prev_idle = false;
 	end
 end
