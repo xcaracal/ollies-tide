@@ -45,4 +45,6 @@ shared_state = 1
 [physics]
 gravity_y = -1000.0
 scale = 0.01
+debug = 0
+allow_dynamic_transforms = 1
 

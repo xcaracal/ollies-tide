@@ -1,4 +1,8 @@
 local prev_idle = true;
+local hit_flag = false;
+
+-- collision_object_script.lua
+local collision_groups = require "main.collision_groups"
 	
 function init(self)
 	msg.post(".", "acquire_input_focus")
@@ -22,36 +26,61 @@ function on_message(self, message_id, message, sender)
 	end
 end
 
+function on_collision(self, normal, distance)
+	local message = { 
+		other_group = collision_groups.player,
+		other_id = msg.url(),
+		normal = normal,
+		distance = distance
+	}
+	msg.post("#", "collision_response", message)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		print("ENEMY HIT")
+		hit_flag = true;
+		msg.post("#enemy", "update_health")
+		-- Handle the collision here
+		-- 'message.other_group' can be used to identify the other collision group
+		-- 'message.other_id' can be used to identify the other collision object
+		-- 'message.normal' contains the collision normal vector
+		-- 'message.distance' contains the penetration distance
+	end
+end
+
+
 
 function update(self, dt)
 	-- Get the position of the character sprite
 	local character_position = go.get_position()
-	print("POS:")
-	print(character_position)
 
 	-- Send a message to the GUI script with the character's position
 	msg.post("#enemy", "update_health_bar", { position = character_position })
 
 	-- Reverse the direction and flip the sprite when the timer reaches a certain value
-	self.move_timer = self.move_timer + dt
-	local change_direction_time = 5 -- Adjust as needed
+	--self.move_timer = self.move_timer + dt
+	--local change_direction_time = 8 -- Adjust as needed
 
-	if self.move_timer > change_direction_time then
-		self.flip.x = -self.flip.x -- Toggle the horizontal flip
-		sprite.set_hflip("#sprite", self.flip.x == -1)
-		self.move_direction = -self.move_direction
-		self.move_timer = 0
-	end
+	--if self.move_timer > change_direction_time then
+	--	self.flip.x = -self.flip.x -- Toggle the horizontal flip
+	--	sprite.set_hflip("#sprite", self.flip.x == -1)
+	--	self.move_direction = -self.move_direction
+	--	self.move_timer = 0
+	--end
 
 	-- Adjust the speed based on your preference
-	local speed = 10
+	local speed = 20
 
 	-- Move the sprite left and right based on time
+	if hit_flag == false then
 	self.vel.x = self.move_direction * speed
 	local pos = go.get_position()
 	pos = pos + self.vel * dt
 	go.set_position(pos)
-	print(prev_idle)
+	end
+	
+	
 	if prev_idle == true then
 	-- Play the run animation continuously
 	--sprite.play_flipbook("#sprite", "run")

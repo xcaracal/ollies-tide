@@ -6,7 +6,7 @@ local function update_healthbar(p)
 	gui.set_size(node, size)
 
 	-- Set interpolation mode to nearest neighbor to prevent blurriness
-	gui.set_texture(node, hash("healthbar-box"), gui.NEAREST, gui.NEAREST)
+	--gui.set_texture(node, hash("healthbar-box"), gui.NEAREST, gui.NEAREST)
 end
 
 function init(self)
@@ -23,12 +23,21 @@ function on_message(self, message_id, message, sender)
 		local health_bar_offset = vmath.vector3(680, 270, 0)  -- Adjust this offset as needed
 		local new_health_bar_position = (message.position + health_bar_offset)
 		local temp_position = vmath.vector3(new_health_bar_position.x*-1, new_health_bar_position.y*-1, new_health_bar_position.z)
-		print(message.position	)
-		print(new_health_bar_position)
+
 		gui.set_position(gui.get_node("healthbar-box"), new_health_bar_position)
+	elseif message_id == hash("update_health") then
+		self.healthPercentage = self.healthPercentage + 0.1
+
+		-- Ensure healthPercentage doesn't go above 1
+		if self.healthPercentage > 1 then
+			self.healthPercentage = 0
+		end
+
+		-- Update the health bar
+		update_healthbar(self.healthPercentage)
 	end
 end
 
 function update(self, dt)
-	
+	-- Perform any additional updates if needed
 end
