@@ -1,7 +1,7 @@
 local prev_idle = true
 local alive_status = true
 local base_attack_damage = 10
-local scaling_factor = 2.0 -- You can adjust the scaling factor as needed
+local scaling_factor = 1.0 -- You can adjust the scaling factor as needed
 local scaled_damage = 0;
 
 local collision_groups = require "main.collision_groups"
@@ -13,13 +13,13 @@ function init(self)
 	self.flip = vmath.vector3(1, 1, 1)
 	self.vel = vmath.vector3(0, 0, 0)
 	self.base_attack_damage = base_attack_damage
-	self.scaling_factor = 3.0
+	self.scaling_factor = scaling_factor
 end
 
-function damage_scale(base, scale_num)
+function damage_scale_otter(base, scale_num)
 	print("OTTER BASE DMG:", base)
 	print("OTTER SCALE DMG:", scale_num)
-	return 100
+	return base * scale_num
 end
 
 function on_message(self, message_id, message, sender)
@@ -31,8 +31,7 @@ function on_message(self, message_id, message, sender)
 		hit_flag = true
 		if message.other_group == collision_groups.ENEMY_GROUP then
 			local enemy_id = message.other_id
-			scaled_damage = damage_scale(self.base_attack_damage, self.scaling_factor)
-			print(scaled_damage)
+			scaled_damage = damage_scale_otter(self.base_attack_damage, self.scaling_factor)
 			msg.post(enemy_id, "update_health", { damage = scaled_damage })
 		end
 

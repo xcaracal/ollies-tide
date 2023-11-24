@@ -2,7 +2,7 @@ local prev_idle = true
 local hit_flag = false
 local alive_status = true
 local base_attack_damage = 10
-local scaling_factor = 3.0 -- You can adjust the scaling factor as needed
+local scaling_factor = 1.0 -- You can adjust the scaling factor as needed
 local scaled_damage = 0;
 
 local collision_groups = require "main.collision_groups"
@@ -18,7 +18,7 @@ function init(self)
 	sprite.set_hflip("#sprite", self.flip.x == -1)
 end
 
-function damage_scale(base, scale_num)
+function damage_scale_enemy(base, scale_num)
 	print("ENEMY BASE DMG:", base)
 	print("ENEMY SCALE DMG:", scale_num)
 	return base * scale_num
@@ -34,7 +34,7 @@ function on_message(self, message_id, message, sender)
 		hit_flag = true
 		if message.other_group == collision_groups.PLAYER_GROUP then
 			local player_id = message.other_id
-			scaled_damage = damage_scale(self.base_attack_damage, self.scaling_factor)
+			scaled_damage = damage_scale_enemy(self.base_attack_damage, self.scaling_factor)
 			msg.post(player_id, "update_health", { damage = scaled_damage })
 		end
 
