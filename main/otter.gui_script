@@ -30,10 +30,16 @@ function on_message(self, message_id, message, sender)
 		-- Set the position of the health bar GUI node
 		gui.set_position(gui.get_node("healthbar-box"), new_health_bar_position)
 	elseif message_id == hash("update_health") then
-		-- Increase health percentage
-		self.healthPercentage = self.healthPercentage + 10
 
-		-- Ensure healthPercentage doesn't go above 1
+		--*********************************************************************************************************************************************
+		--TODO:
+		-- Decreases the health debending on  number scale from 0-100% (as seen here the damage every hit is just 10 for now)
+
+		-- Decreases the health depending on the damage received
+		local damage = message.damage or 0
+		self.healthPercentage = self.healthPercentage + damage
+
+		-- Ensure healthPercentage stops when dead
 		if self.healthPercentage > 100 then
 			self.healthPercentage = 100
 			msg.post("#player", "stop_sprite")

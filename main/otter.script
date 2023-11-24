@@ -1,15 +1,21 @@
 local prev_idle = true;
 local hit_flag = false;
 local alive_status = true;
+local attack_damage = 10 -- Initialize directly without using self
+
 
 local collision_groups = require "main.collision_groups"
+print("WORKING")
 
-function init(self)
+
+function init(self)	
 	msg.post(".", "acquire_input_focus")
 	self.move_timer = 0
 	self.move_direction = 1 -- 1 for right, -1 for left
 	self.flip = vmath.vector3(1, 1, 1) -- Represents no flip initially
 	self.vel = vmath.vector3(0, 0, 0)
+	self.attack_damage = attack_damage -- Set the attack damage here
+
 end
 
 function on_message(self, message_id, message, sender)
@@ -21,7 +27,10 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("collision_response") then
 		print("OTTER HIT")
 		hit_flag = true
-		msg.post("#otter", "update_health")
+		if message.other_group == collision_groups.ENEMY_GROUP then
+			local enemy_id = message.other_id
+			msg.post(enemy_id, "update_health", { damage = self.attack_damage })
+		end
 
 		-- Move the character position slightly to the left upon collision
 		local character_position = go.get_position()

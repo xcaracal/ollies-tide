@@ -1,6 +1,7 @@
 local prev_idle = true;
 local hit_flag = false;
 local alive_status = true;
+local attack_damage = 20;
 
 local collision_groups = require "main.collision_groups"
 
@@ -10,6 +11,9 @@ function init(self)
 	self.move_direction = -1 -- 1 for right, -1 for left
 	self.flip = vmath.vector3(-1, 1, 1) -- Set X scale to -1 to flip the sprite initially
 	self.vel = vmath.vector3(0, 0, 0)
+	self.attack_damage = attack_damage
+
+
 
 	-- Set the initial scale to flip the sprite horizontally
 	sprite.set_hflip("#sprite", self.flip.x == -1)
@@ -24,7 +28,10 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("collision_response") then
 		print("ENEMY HIT")
 		hit_flag = true
-		msg.post("#enemy", "update_health")
+		if message.other_group == collision_groups.PLAYER_GROUP then
+			local player_id = message.other_id
+			msg.post(player_id, "update_health", { damage = self.attack_damage })
+		end
 
 		-- Move the character position slightly to the left upon collision
 		local character_position = go.get_position()
