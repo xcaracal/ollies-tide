@@ -35,7 +35,7 @@ function on_message(self, message_id, message, sender)
 		-- Ensure healthPercentage stops when dead
 		if self.healthPercentage > 100 then
 			self.healthPercentage = 100
-			msg.post("#player", "stop_sprite")
+			msg.post("#enemy1", "stop_sprite")
 		end
 		
 
