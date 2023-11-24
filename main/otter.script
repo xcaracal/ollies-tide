@@ -1,7 +1,7 @@
 local prev_idle = true
 local alive_status = true
 local base_attack_damage = 10
-local scaling_factor = 3.0 -- You can adjust the scaling factor as needed
+local scaling_factor = 2.0 -- You can adjust the scaling factor as needed
 local scaled_damage = 0;
 
 local collision_groups = require "main.collision_groups"
@@ -19,7 +19,7 @@ end
 function damage_scale(base, scale_num)
 	print("OTTER BASE DMG:", base)
 	print("OTTER SCALE DMG:", scale_num)
-	return base * scale_num
+	return 100
 end
 
 function on_message(self, message_id, message, sender)
