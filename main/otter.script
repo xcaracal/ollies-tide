@@ -1,7 +1,7 @@
 local prev_idle = true
 local alive_status = true
 local base_attack_damage = 10
-local scaling_factor = 1.0 -- You can adjust the scaling factor as needed
+local scaling_factor = 3.0 -- You can adjust the scaling factor as needed
 local scaled_damage = 0;
 
 local collision_groups = require "main.collision_groups"

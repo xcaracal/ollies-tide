@@ -2,7 +2,7 @@ local prev_idle = true
 local hit_flag = false
 local alive_status = true
 local base_attack_damage = 10
-local scaling_factor = 1.0 -- You can adjust the scaling factor as needed
+local scaling_factor = 2.0 -- You can adjust the scaling factor as needed
 local scaled_damage = 0;
 
 local collision_groups = require "main.collision_groups"
@@ -30,7 +30,6 @@ function on_message(self, message_id, message, sender)
 		local new_health_bar_position = message.position + health_bar_offset
 		gui.set_position(gui.get_node("healthbar"), new_health_bar_position)
 	elseif message_id == hash("collision_response") then
-		--print("ENEMY HIT")
 		hit_flag = true
 		if message.other_group == collision_groups.PLAYER_GROUP then
 			local player_id = message.other_id

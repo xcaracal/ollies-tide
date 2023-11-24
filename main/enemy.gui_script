@@ -1,22 +1,39 @@
-local function update_healthbar(p)
-	-- Get the GUI node representing the health bar
-	local node = gui.get_node("healthbar")
-	local size = gui.get_size(node)
+local max_health_stat =  2000;
+local curr_health_stat = max_health_stat
+local no_health = false;
 
-	-- Ensure p is within the valid range [0, 100]
-	p = math.max(0, math.min(100, p))
-
-	-- Update the size based on health percentage in the range of 0-100
-	size.x = (1 - p / 100) * 300 -- Max width is 400 pixels, subtracting from 1 to invert the value
-	gui.set_size(node, size)
-end
 
 function init(self)
 	-- Initialize the GUI script
 	-- print("GUI Script Initialized")
 	msg.post(".", "acquire_input_focus") 
 	self.time = 0
-	self.healthPercentage = 0 -- Initial health percentage
+	self.healthPercentage = 0 
+	self.curr_health_stat = curr_health_stat
+	self.no_health = no_health
+end
+
+local function update_healthbar(dmg_num)
+	-- Get the GUI node representing the health bar
+	local node = gui.get_node("healthbar")
+	local size = gui.get_size(node)
+
+	--calculate ratio of dmg_num to max health
+	curr_health_stat = curr_health_stat - dmg_num
+	if curr_health_stat <= 0 then
+		curr_health_stat =  0
+		no_health = true
+	end
+
+	print("Current Enemy Health:", curr_health_stat)
+	local temp_health_ratio = 100 - ((curr_health_stat/max_health_stat) * 100)
+	
+	-- Ensure p is within the valid range [0, 100]
+	temp_health_ratio = math.max(0, math.min(100, temp_health_ratio))
+
+	-- Update the size based on health percentage in the range of 0-100
+	size.x = (1 - temp_health_ratio / 100) * 300 -- Max width is 400 pixels, subtracting from 1 to invert the value
+	gui.set_size(node, size)
 end
 
 function on_message(self, message_id, message, sender)
@@ -29,18 +46,15 @@ function on_message(self, message_id, message, sender)
 		-- Set the position of the health bar GUI node
 		gui.set_position(gui.get_node("healthbar-box"), new_health_bar_position)
 	elseif message_id == hash("update_health") then
-		local damage = message.damage or 0
-		self.healthPercentage = self.healthPercentage + damage
-
-		-- Ensure healthPercentage stops when dead
-		if self.healthPercentage > 100 then
-			self.healthPercentage = 100
-			msg.post("#enemy1", "stop_sprite")
-		end
-		
+		local damage = message.damage
 
 		-- Update the health bar
-		update_healthbar(self.healthPercentage)
+		update_healthbar(damage)
+
+		-- Ensure healthPercentage stops when dead
+		if no_health == true then
+			msg.post("#enemy1", "stop_sprite")
+		end
 	end
 end
 
