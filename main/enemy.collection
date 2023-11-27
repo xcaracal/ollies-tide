@@ -1,8 +1,8 @@
-name: "player"
+name: "enemy"
 scale_along_z: 0
 embedded_instances {
-  id: "OtterGO"
-  children: "Otter"
+  id: "EnemyGO"
+  children: "Enemy"
   data: ""
   position {
     x: 0.0
@@ -22,11 +22,11 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "Otter"
+  id: "Enemy"
   children: "HealthbarGO"
   data: "components {\n"
-  "  id: \"otter\"\n"
-  "  component: \"/Game Resources/Sprites/Player/Otter/otter.script\"\n"
+  "  id: \"enemy\"\n"
+  "  component: \"/Game Resources/Sprites/Enemy/Enemy1/enemy.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
@@ -42,40 +42,40 @@ embedded_instances {
   "  }\n"
   "}\n"
   "embedded_components {\n"
-  "  id: \"OtterSprite\"\n"
+  "  id: \"sprite\"\n"
   "  type: \"sprite\"\n"
-  "  data: \"tile_set: \\\"/Game Resources/Sprites/Player/Otter/otter.atlas\\\"\\n"
-  "default_animation: \\\"otter-basic\\\"\\n"
+  "  data: \"tile_set: \\\"/Game Resources/Sprites/Enemy/Enemy1/enemy.atlas\\\"\\n"
+  "default_animation: \\\"EnemyIdle\\\"\\n"
   "material: \\\"/builtins/materials/sprite.material\\\"\\n"
   "blend_mode: BLEND_MODE_ALPHA\\n"
   "\"\n"
   "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
+  "    x: -2.0\n"
+  "    y: -3.0\n"
   "    z: 0.0\n"
   "  }\n"
   "  rotation {\n"
   "    x: 0.0\n"
-  "    y: 0.0\n"
+  "    y: 1.0\n"
   "    z: 0.0\n"
-  "    w: 1.0\n"
+  "    w: 6.123234E-17\n"
   "  }\n"
   "  scale {\n"
-  "    x: 0.245395\n"
-  "    y: 0.249711\n"
+  "    x: 1.98536\n"
+  "    y: 1.875033\n"
   "    z: 1.0\n"
   "  }\n"
   "}\n"
   "embedded_components {\n"
-  "  id: \"OtterCollsionBox\"\n"
+  "  id: \"EnemyCollisionBox\"\n"
   "  type: \"collisionobject\"\n"
   "  data: \"collision_shape: \\\"\\\"\\n"
   "type: COLLISION_OBJECT_TYPE_TRIGGER\\n"
   "mass: 0.0\\n"
   "friction: 0.1\\n"
   "restitution: 0.5\\n"
-  "group: \\\"PLAYER_GROUP\\\"\\n"
-  "mask: \\\"ENEMY_GROUP\\\"\\n"
+  "group: \\\"ENEMY_GROUP\\\"\\n"
+  "mask: \\\"PLAYER_GROUP\\\"\\n"
   "embedded_collision_shape {\\n"
   "  shapes {\\n"
   "    shape_type: TYPE_BOX\\n"
@@ -93,8 +93,8 @@ embedded_instances {
   "    index: 0\\n"
   "    count: 3\\n"
   "  }\\n"
-  "  data: 139.87755\\n"
-  "  data: 135.17151\\n"
+  "  data: 109.17343\\n"
+  "  data: 153.57317\\n"
   "  data: 10.0\\n"
   "}\\n"
   "linear_damping: 0.0\\n"
@@ -128,7 +128,7 @@ embedded_instances {
   }
   scale3 {
     x: 1.0
-    y: 1.0
+    y: 1.010582
     z: 1.0
   }
 }

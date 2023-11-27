@@ -1,0 +1,4 @@
+tile_set: "/Game Resources/Sprites/Enemy/Enemy1/enemy.atlas"
+default_animation: "EnemyIdle"
+material: "/builtins/materials/sprite.material"
+blend_mode: BLEND_MODE_ALPHA

@@ -1,4 +1,4 @@
-tile_set: ""
-default_animation: ""
+tile_set: "/Game Resources/Sprites/Player/Otter/otter.atlas"
+default_animation: "otter-basic"
 material: "/builtins/materials/sprite.material"
 blend_mode: BLEND_MODE_ALPHA

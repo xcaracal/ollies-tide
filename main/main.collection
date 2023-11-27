@@ -1,4 +1,44 @@
 name: "main"
+collection_instances {
+  id: "otter1"
+  collection: "/main/otter.collection"
+  position {
+    x: 302.0
+    y: 310.0
+    z: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 0.438884
+    y: 0.491589
+    z: 1.0
+  }
+}
+collection_instances {
+  id: "enemy1"
+  collection: "/main/enemy.collection"
+  position {
+    x: 636.0
+    y: 320.0
+    z: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 0.496329
+    y: 0.47988
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "go"
@@ -28,8 +68,8 @@ embedded_instances {
   "blend_mode: BLEND_MODE_ALPHA\\n"
   "\"\n"
   "  position {\n"
-  "    x: 98.0\n"
-  "    y: -713.0\n"
+  "    x: 475.0\n"
+  "    y: -557.0\n"
   "    z: 0.0\n"
   "  }\n"
   "  rotation {\n"
@@ -37,6 +77,11 @@ embedded_instances {
   "    y: 0.0\n"
   "    z: 0.0\n"
   "    w: 1.0\n"
+  "  }\n"
+  "  scale {\n"
+  "    x: 1.643343\n"
+  "    y: 1.437012\n"
+  "    z: 1.0\n"
   "  }\n"
   "}\n"
   ""
@@ -292,45 +337,6 @@ embedded_instances {
   position {
     x: -42.0
     y: -27.0
-    z: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-embedded_instances {
-  id: "go1"
-  data: "embedded_components {\n"
-  "  id: \"collectionfactory\"\n"
-  "  type: \"collectionfactory\"\n"
-  "  data: \"prototype: \\\"/main/otter.collection\\\"\\n"
-  "load_dynamically: false\\n"
-  "dynamic_prototype: false\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 432.0
-    y: 186.0
     z: 1.0
   }
   rotation {
