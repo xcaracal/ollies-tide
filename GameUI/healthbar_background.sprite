@@ -1,0 +1,4 @@
+tile_set: "/GameUI/healthbar.atlas"
+default_animation: "health-bar-background"
+material: "/builtins/materials/sprite.material"
+blend_mode: BLEND_MODE_ALPHA

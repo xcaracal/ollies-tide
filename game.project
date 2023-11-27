@@ -9,8 +9,8 @@ game_binding = /input/game.input_bindingc
 use_accelerometer = 0
 
 [display]
-width = 1280
-height = 720
+width = 1024
+height = 768
 fullscreen = 0
 display_device_info = 1
 
@@ -50,6 +50,6 @@ allow_dynamic_transforms = 1
 type = 2D
 
 [graphics]
-default_texture_min_filter = linear
-default_texture_mag_filter = linear
+default_texture_min_filter = nearest
+default_texture_mag_filter = nearest
 
