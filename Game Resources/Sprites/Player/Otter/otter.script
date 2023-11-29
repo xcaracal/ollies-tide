@@ -3,11 +3,34 @@ local alive_status = true
 
 local max_health_stat = 100
 local curr_health_stat = max_health_stat
-local defense_stat = 10  -- Adjust this value as needed
+local defense_stat = 10
+local crit_rate_stat = 0.1      -- 10% critical rate
+local crit_damage_stat = 2.0    -- 200% critical damage
+local hp_percent_stat = 1.5     -- 150% HP
+local attack_speed_stat = 1.5   -- 150% attack speed
 
 local base_attack_damage = 10
 local scaling_factor = 2.0
 local scaled_damage = 0
+
+local collision_groups = require "main.collision_groups"
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.move_timer = 0
+	self.move_direction = 1
+	self.flip = vmath.vector3(1, 1, 1)
+	self.vel = vmath.vector3(0, 0, 0)
+	self.base_attack_damage = base_attack_damage
+	self.scaling_factor = scaling_factor
+	self.curr_health_stat = curr_health_stat
+	self.max_health_stat = max_health_stat
+	self.defense_stat = defense_stat
+	self.crit_rate_stat = crit_rate_stat
+	self.crit_damage_stat = crit_damage_stat
+	self.hp_percent_stat = hp_percent_stat
+	self.attack_speed_stat = attack_speed_stat
+end
 
 local collision_groups = require "main.collision_groups"
 
