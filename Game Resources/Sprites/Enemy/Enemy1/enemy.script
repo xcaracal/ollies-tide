@@ -1,6 +1,10 @@
 local prev_idle = true
-local hit_flag = false
 local alive_status = true
+
+local max_health_stat =  50;
+local curr_health_stat = max_health_stat
+local no_health = false
+
 local base_attack_damage = 10
 local scaling_factor = 2.0 -- You can adjust the scaling factor as needed
 local scaled_damage = 0;
@@ -15,7 +19,23 @@ function init(self)
 	self.vel = vmath.vector3(0, 0, 0)
 	self.base_attack_damage = base_attack_damage
 	self.scaling_factor = scaling_factor
+	self.curr_health_stat = curr_health_stat
+	self.max_health_stat = max_health_stat
 	--sprite.set_hflip("#sprite", self.flip.x == -1)
+end
+
+function handle_damage_toself_enemy(self, dmg_taken)
+	curr_health_stat = curr_health_stat - dmg_taken
+	if curr_health_stat <= 0 then
+		curr_health_stat = 0
+	end
+	print(max_health_stat)
+	print(curr_health_stat)
+	msg.post("HealthbarProgress#Healthbar", "set_health", { max_health_stat = self.max_health_stat, curr_health_stat = curr_health_stat })
+end
+
+function handle_damage_toother()
+	scaled_damage = damage_scale_otter(self.base_attack_damage, self.scaling_factor)
 end
 
 function damage_scale_enemy(base, scale_num)
@@ -25,11 +45,7 @@ function damage_scale_enemy(base, scale_num)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("update_health_bar") then
-		local health_bar_offset = vmath.vector3(0, 50, 0)
-		local new_health_bar_position = message.position + health_bar_offset
-		gui.set_position(gui.get_node("healthbar"), new_health_bar_position)
-	elseif message_id == hash("collision_response") then
+	if message_id == hash("collision_response") then
 		hit_flag = true
 		if message.other_group == collision_groups.PLAYER_GROUP then
 			local player_id = message.other_id
@@ -42,6 +58,15 @@ function on_message(self, message_id, message, sender)
 		go.set_position(character_position)
 
 		hit_flag = false
+	elseif message_id == hash("update_health") then
+		local damage_from_other = message.damage
+		handle_damage_toself_enemy(self ,damage_from_other)
+
+		print("HEALTH IS BEING UPDATED", curr_health_stat)
+
+
+
+		
 	elseif message_id == hash("stop_sprite") then
 		alive_status = false
 
@@ -53,7 +78,6 @@ end
 
 function update(self, dt)
 	local character_position = go.get_position()
-	msg.post("#enemy", "update_health_bar", { position = character_position })
 
 	local speed = 50
 

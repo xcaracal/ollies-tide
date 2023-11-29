@@ -1,0 +1,8 @@
+function on_message(self, message_id, message, sender)
+	if message_id == hash("del_h_bar") then
+		print("P:ING")
+		go.delete("HealthbarBackground")
+		go.delete("HealthbarProgress")
+
+	end
+end

@@ -1,0 +1,32 @@
+local original_position
+local original_width
+
+function init(self)
+	-- Initialize original_position and original_width
+	original_position = go.get_position("HealthbarProgress")
+	original_width = go.get_scale("HealthbarProgress").x
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("set_health") then
+		print("Received message from:", sender)  -- This prints the URL of the sender
+		print(receiver_url)
+		
+		temp_max_health_stat = message.max_health_stat
+		temp_curr_health_stat = message.curr_health_stat
+		local scale = go.get_scale("HealthbarProgress")
+		local position = go.get_position("HealthbarProgress")  -- Get the current position
+		scale.x = (temp_curr_health_stat/temp_max_health_stat)
+
+		if scale.x <= 0 then
+			scale.x = 0.001
+			msg.post(sender, "stop_sprite")
+			msg.post("HealthbarGO#DeleteHealthbarItems", "del_h_bar")
+		end
+		position.x = (107.5 - (107.5*scale.x)) * -1
+
+		go.set_scale(scale, "HealthbarProgress")
+		go.set_position(position, "HealthbarProgress")
+	end
+end
