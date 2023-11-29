@@ -1,17 +1,17 @@
 local prev_idle = true
 local alive_status = true
 
-local max_health_stat =  100;
+local max_health_stat = 100
 local curr_health_stat = max_health_stat
-local no_health = false
+local defense_stat = 10  -- Adjust this value as needed
 
 local base_attack_damage = 10
-local scaling_factor = 3.0 -- You can adjust the scaling factor as needed
-local scaled_damage = 0;
+local scaling_factor = 2.0
+local scaled_damage = 0
 
 local collision_groups = require "main.collision_groups"
 
-function init(self)    
+function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.move_timer = 0
 	self.move_direction = 1
@@ -21,20 +21,21 @@ function init(self)
 	self.scaling_factor = scaling_factor
 	self.curr_health_stat = curr_health_stat
 	self.max_health_stat = max_health_stat
+	self.defense_stat = defense_stat
 end
 
 function handle_damage_toself_otter(self, dmg_taken)
+	-- Apply defense reduction to incoming damage
+	dmg_taken = dmg_taken - self.defense_stat
+
 	curr_health_stat = curr_health_stat - dmg_taken
 	if curr_health_stat <= 0 then
 		curr_health_stat = 0
 	end
-	print(max_health_stat)
-	print(curr_health_stat)
-	msg.post("HealthbarProgress#Healthbar", "set_health", { max_health_stat = self.max_health_stat, curr_health_stat = curr_health_stat })
-end
 
-function handle_damage_toother()
-	scaled_damage = damage_scale_otter(self.base_attack_damage, self.scaling_factor)
+	print("Max Health:", max_health_stat)
+	print("Current Health:", curr_health_stat)
+	msg.post("HealthbarProgress#Healthbar", "set_health", { max_health_stat = self.max_health_stat, curr_health_stat = curr_health_stat })
 end
 
 function damage_scale_otter(base, scale_num)
@@ -59,13 +60,9 @@ function on_message(self, message_id, message, sender)
 		hit_flag = false
 	elseif message_id == hash("update_health") then
 		local damage_from_other = message.damage
-		handle_damage_toself_otter(self ,damage_from_other)
-		
-		print("HEALTH IS BEING UPDATED", curr_health_stat)
+		handle_damage_toself_otter(self, damage_from_other)
 
-		
-		
-		
+		print("HEALTH IS BEING UPDATED", curr_health_stat)
 	elseif message_id == hash("stop_sprite") then
 		alive_status = false
 
@@ -78,7 +75,6 @@ end
 
 function update(self, dt)
 	local character_position = go.get_position()
-
 	local speed = 50
 
 	if alive_status then
@@ -93,4 +89,5 @@ function update(self, dt)
 		prev_idle = false
 	end
 end
+
 	
