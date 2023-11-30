@@ -20,7 +20,7 @@ animations {
     image: "/Game Resources/Sprites/Enemy/Enemy1/enemy-attack/cultist_priest_attack_5.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
-  playback: PLAYBACK_LOOP_FORWARD
+  playback: PLAYBACK_ONCE_FORWARD
   fps: 8
   flip_horizontal: 0
   flip_vertical: 0

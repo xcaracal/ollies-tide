@@ -13,9 +13,6 @@ local base_attack_damage = 10
 local scaling_factor = 2.0
 local scaled_damage = 0
 
-local animation_playing = false
-local animation_timer = 0
-local animation_duration = 1  -- Adjust this value based on your animation duration
 local prev_animation = "idle"
 
 local collision_groups = require "main.collision_groups"
@@ -58,21 +55,25 @@ function damage_scale_enemy(base, scale_num)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("collision_response") then
+    if message_id == hash("animation_done") then
+		if prev_animation == "attack" then
+			sprite.play_flipbook("#sprite", "EnemyIdle")  -- Switch back to idle animation when attack animation is done
+			prev_animation = "idle"
+		end
+	elseif message_id == hash("collision_response") then
 		hit_flag = true
 		if message.other_group == collision_groups.PLAYER_GROUP then
 			local player_id = message.other_id
 			scaled_damage = damage_scale_enemy(self.base_attack_damage, self.scaling_factor)
 			msg.post(player_id, "update_health", { damage = scaled_damage })
 			local character_position = go.get_position()
-			character_position = character_position - vmath.vector3(-60, 0, 0)
+			character_position = character_position - vmath.vector3(-200, 0, 0)
 			go.set_position(character_position)
 		elseif message.other_group == collision_groups.PLAYER_ATTACK_GROUP then
-			print("HHHH")
-			--if prev_animation 
-			--sprite.play_flipbook("#sprite", "EnemyAttack")
-			animation_playing = true
-			animation_timer = 0
+			if prev_animation ~= "attack" then
+				sprite.play_flipbook("#sprite", "EnemyAttack")
+				prev_animation = "attack"
+			end
 		end
 
 		hit_flag = false
@@ -93,18 +94,11 @@ end
 function update(self, dt)
 	local character_position = go.get_position()
 	local speed = 50
-
 	if alive_status then
 		self.vel.x = self.move_direction * speed
 		local pos = go.get_position()
 		pos = pos + self.vel * dt
 		go.set_position(pos)
 	end
-	if animation_playing then
-		animation_timer = animation_timer + dt
-		if animation_timer >= animation_duration then
-			--sprite.play_flipbook("#sprite", "EnemyIdle")  -- Switch to idle animation when the timer is up
-			animation_playing = false
-		end
-	end
+	
 end
