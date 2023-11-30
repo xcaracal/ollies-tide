@@ -13,6 +13,8 @@ local base_attack_damage = 10
 local scaling_factor = 2.0
 local scaled_damage = 0
 
+local prev_animation = "idle"
+
 local collision_groups = require "main.collision_groups"
 
 function init(self)
@@ -68,15 +70,26 @@ function damage_scale_otter(base, scale_num)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("collision_response") then
+	if message_id == hash("animation_done") then
+		if prev_animation == "attack" then
+			sprite.play_flipbook("#sprite", "idle")  -- Switch back to idle animation when attack animation is done
+			prev_animation = "idle"
+		end
+	elseif message_id == hash("collision_response") then
+		print(prev_animation)
 		hit_flag = true
 		if message.other_group == collision_groups.ENEMY_GROUP then
 			local enemy_id = message.other_id
 			scaled_damage = damage_scale_otter(self.base_attack_damage, self.scaling_factor)
 			msg.post(enemy_id, "update_health", { damage = scaled_damage })
 			local character_position = go.get_position()
-			character_position = character_position - vmath.vector3(200, 0, 0)
+			character_position = character_position - vmath.vector3(20, 0, 0)
 			go.set_position(character_position)
+		elseif message.other_group == collision_groups.ENEMY_ATTACK_GROUP then
+			if prev_animation ~= "attack" then
+				sprite.play_flipbook("#sprite", "attack")
+				prev_animation = "attack"
+			end
 		end
 
 		hit_flag = false

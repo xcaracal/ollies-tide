@@ -21,7 +21,7 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.move_timer = 0
 	self.move_direction = -1
-	self.flip = vmath.vector3(01, 1, 1)
+	self.flip = vmath.vector3(1, 1, 1)
 	self.vel = vmath.vector3(0, 0, 0)
 	self.base_attack_damage = base_attack_damage
 	self.scaling_factor = scaling_factor
@@ -67,7 +67,7 @@ function on_message(self, message_id, message, sender)
 			scaled_damage = damage_scale_enemy(self.base_attack_damage, self.scaling_factor)
 			msg.post(player_id, "update_health", { damage = scaled_damage })
 			local character_position = go.get_position()
-			character_position = character_position - vmath.vector3(-200, 0, 0)
+			character_position = character_position - vmath.vector3(-20, 0, 0)
 			go.set_position(character_position)
 		elseif message.other_group == collision_groups.PLAYER_ATTACK_GROUP then
 			if prev_animation ~= "attack" then

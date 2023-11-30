@@ -3,25 +3,6 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 animations {
-  id: "run"
-  images {
-    image: "/assets/otter-run/otter_run_1.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  images {
-    image: "/assets/otter-run/otter_run_2.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  images {
-    image: "/assets/otter-run/otter_run_3.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  playback: PLAYBACK_LOOP_FORWARD
-  fps: 8
-  flip_horizontal: 0
-  flip_vertical: 0
-}
-animations {
   id: "idle"
   images {
     image: "/Game Resources/Sprites/Player/Otter/OtterIdle/otter_idle_1.png"
@@ -44,6 +25,29 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_PINGPONG
+  fps: 8
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "attack"
+  images {
+    image: "/Game Resources/Sprites/Player/Otter/OtterAttack/otter_attack_1.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/Game Resources/Sprites/Player/Otter/OtterAttack/otter_attack_2.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/Game Resources/Sprites/Player/Otter/OtterAttack/otter_attack_3.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/Game Resources/Sprites/Player/Otter/OtterAttack/otter_attack_4.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  playback: PLAYBACK_LOOP_FORWARD
   fps: 8
   flip_horizontal: 0
   flip_vertical: 0

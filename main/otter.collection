@@ -42,7 +42,7 @@ embedded_instances {
   "  }\n"
   "}\n"
   "embedded_components {\n"
-  "  id: \"OtterSprite\"\n"
+  "  id: \"sprite\"\n"
   "  type: \"sprite\"\n"
   "  data: \"tile_set: \\\"/Game Resources/Sprites/Player/Otter/otter.atlas\\\"\\n"
   "default_animation: \\\"idle\\\"\\n"
